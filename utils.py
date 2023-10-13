@@ -135,40 +135,6 @@ def con_loss(features, labels, margin=0.4):
     loss /= (B * B)
     return loss
 
-
-def instance_con_loss(features, labels, margin=1.0):
-    B, _ = features.shape
-    half = B//2
-    index = np.arange(half)
-    permute_idx = np.random.permutation(B)[:half]
-    while (index == permute_idx).sum() != 0 or (index == permute_idx//2).sum() != 0:
-        permute_idx = np.random.permutation(B)[:half]
-    mask_feats, shuffle_feats = features[:half], features[half:]
-    neg_feats = features[permute_idx]
-    cos_dis = F.normalize(mask_feats - shuffle_feats)
-    neg_dis = F.normalize(mask_feats - neg_feats)
-    # cos_matrix_pos = F.normalize(mask_feats - shuffle_feats)
-    # cos_matrix_neg = F.normalize(mask_feats - neg_feats)
-    loss = cos_dis.sum(dim=-1) - neg_dis.sum(dim=-1) + margin
-    # pos_label_matrix = torch.stack([labels == labels[i] for i in range(B)]).float()
-    # neg_label_matrix = 1 - pos_label_matrix
-    # pos_cos_matrix = 1 - cos_matrix
-    # neg_cos_matrix = cos_matrix - margin
-    # neg_cos_matrix[neg_cos_matrix < 0] = 0
-    loss[loss < 0] = 0
-    loss = loss.sum()/B
-    return loss
-
-def suppression(target: torch.Tensor, temperature: float = 2):
-    """
-    target size: [B, S, C]
-    threshold: [B',]
-    """
-    B = target.size(0)
-    target = torch.softmax(target / temperature, dim=-1)
-    # target = 1 - target
-    return target
-
 def load_checkpoint(config, model, optimizer, lr_scheduler, loss_scaler, logger):
     logger.info(f"==============> Resuming form {config.MODEL.RESUME}....................")
     if config.MODEL.RESUME.startswith('https'):

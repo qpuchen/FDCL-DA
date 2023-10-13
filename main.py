@@ -28,7 +28,7 @@ from lr_scheduler import build_scheduler
 from optimizer import build_optimizer
 from logger import create_logger
 from utils import load_checkpoint, load_pretrained, save_checkpoint, NativeScalerWithGradNormCount, auto_resume_helper, \
-    reduce_tensor, parse_option, con_loss, instance_con_loss, suppression
+    reduce_tensor, parse_option, con_loss
 
 from torch.distributed.elastic.multiprocessing.errors import record
 
@@ -170,11 +170,8 @@ def train_one_epoch(config, model, criterion, data_loader, optimizer, epoch, mix
             loss = loss + config.TRAIN.SWAP_W * loss_swap
 
         if config.TRAIN.CON:
-            # loss_con = instance_con_loss(feats, label, config.TRAIN.MARGIN)
             loss_con = con_loss(feats[:B // scale], label[:B // scale])
             loss = loss + config.TRAIN.CON_W * loss_con
-        else:
-            feats = None
 
         if config.TRAIN.use_selection:
             for name in logits_dict:
