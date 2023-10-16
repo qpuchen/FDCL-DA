@@ -1,10 +1,3 @@
-# --------------------------------------------------------
-# Swin Transformer
-# Copyright (c) 2021 Microsoft
-# Licensed under The MIT License [see LICENSE for details]
-# Written by Ze Liu
-# --------------------------------------------------------
-
 import os
 import time
 import json
@@ -142,7 +135,7 @@ def train_one_epoch(config, model, criterion, data_loader, optimizer, epoch, mix
     cls_loss_meter = AverageMeter()
     swap_loss_meter = AverageMeter()
     con_loss_meter = AverageMeter()
-    loss_d_meter = AverageMeter()
+    loss_fd_meter = AverageMeter()
     scale = int(1 + config.TRAIN.SWAP)
     norm_meter = AverageMeter()
     scaler_meter = AverageMeter()
@@ -175,16 +168,16 @@ def train_one_epoch(config, model, criterion, data_loader, optimizer, epoch, mix
 
         if config.TRAIN.use_selection:
             for name in logits_dict:
-                loss_d = torch.tensor(0.0).cuda(non_blocking=True)
-                if config.TRAIN.DIS_W != 0:
+                loss_fd = torch.tensor(0.0).cuda(non_blocking=True)
+                if config.TRAIN.FD_W != 0:
                     S = logits_dict[name].size(1)
                     logit = logits_dict[name].view(-1, config.MODEL.NUM_CLASSES).contiguous()
                     n_preds = nn.Hardtanh()(logit)
                     labels_0 = torch.zeros([B * S, config.MODEL.NUM_CLASSES]) - 1
                     labels_0 = labels_0.cuda(non_blocking=True)
-                    loss_d_ = nn.MSELoss()(n_preds[:B // scale], labels_0[:B // scale])
-                    loss += config.TRAIN.DIS_W * loss_d_
-                    loss_d += loss_d_
+                    loss_fd_ = nn.MSELoss()(n_preds[:B // scale], labels_0[:B // scale])
+                    loss += config.TRAIN.FD_W * loss_fd_
+                    loss_fd += loss_fd_
 
         loss = loss / config.TRAIN.ACCUMULATION_STEPS
 
@@ -209,7 +202,7 @@ def train_one_epoch(config, model, criterion, data_loader, optimizer, epoch, mix
             con_loss_meter.update(loss_con.item(), imgs.size(0))
 
         if config.TRAIN.use_selection:
-            loss_d_meter.update(loss_d.item(), imgs.size(0))
+            loss_fd_meter.update(loss_fd.item(), imgs.size(0))
 
         if grad_norm is not None:  # loss_scaler return None if not update
             norm_meter.update(grad_norm)
@@ -229,7 +222,7 @@ def train_one_epoch(config, model, criterion, data_loader, optimizer, epoch, mix
                 f'loss_cls {cls_loss_meter.val:.4f} ({cls_loss_meter.avg:.4f})\t'
                 f'loss_swap {swap_loss_meter.val:.4f} ({swap_loss_meter.avg:.4f})\t'
                 f'loss_con {con_loss_meter.val:.4f} ({con_loss_meter.avg:.4f})\t'
-                f'loss_d {loss_d_meter.val:.4f} ({loss_d_meter.avg:.4f})\t'
+                f'loss_fd {loss_fd_meter.val:.4f} ({loss_fd_meter.avg:.4f})\t'
                 f'grad_norm {norm_meter.val:.4f} ({norm_meter.avg:.4f})\t'
                 f'loss_scale {scaler_meter.val:.4f} ({scaler_meter.avg:.4f})\t'
                 f'mem {memory_used:.0f}MB')

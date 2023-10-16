@@ -210,7 +210,7 @@ _C.TRAIN.ORIGIN_W = 1
 _C.TRAIN.NUM_PART = 2
 _C.TRAIN.MARGIN = 0.4
 _C.TRAIN.CON_W = 0
-_C.TRAIN.DIS_W = 0
+_C.TRAIN.FD_W = 0
 
 # -----------------------------------------------------------------------------
 # Augmentation settings
@@ -381,8 +381,8 @@ def update_config(config, args):
     if _check_args('con_w'):
         config.TRAIN.CON_W = args.con_w
 
-    if _check_args('dis_w'):
-        config.TRAIN.DIS_W = args.dis_w
+    if _check_args('fd_w'):
+        config.TRAIN.FD_W = args.fd_w
 
     if _check_args('epochs'):
         config.TRAIN.EPOCHS = args.epochs

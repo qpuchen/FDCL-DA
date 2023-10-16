@@ -1,10 +1,3 @@
-# --------------------------------------------------------
-# Swin Transformer
-# Copyright (c) 2021 Microsoft
-# Licensed under The MIT License [see LICENSE for details]
-# Written by Ze Liu
-# --------------------------------------------------------
-
 import os
 import torch
 import torch.distributed as dist
@@ -12,7 +5,6 @@ from torch._six import inf
 import argparse
 from config import get_config
 import torch.nn.functional as F
-import numpy as np
 
 def parse_option():
     parser = argparse.ArgumentParser('Swin Transformer training and evaluation script', add_help=False)
@@ -69,7 +61,7 @@ def parse_option():
                         help="loss weight for con loss")
     parser.add_argument('--suppr_w', type=float, default=0.5,
                         help="loss weight for suppression loss")
-    parser.add_argument('--dis_w', type=float, default=0.5,
+    parser.add_argument('--fd_w', type=float, default=0.5,
                         help="loss weight for drop loss")
     parser.add_argument('--origin_w', type=float, default=1,
                         help="weight for original loss")
@@ -106,21 +98,6 @@ def parse_option():
     config = get_config(args)
 
     return args, config
-
-
-def my_con_loss(features, labels, margin=0.4):
-    B, _ = features.shape
-    features = F.normalize(features)
-    cos_matrix = features.mm(features.t())
-    pos_label_matrix = torch.stack([labels == labels[i] for i in range(B)]).float()
-    neg_label_matrix = 1 - pos_label_matrix
-    pos_cos_matrix = 1 - cos_matrix
-    neg_cos_matrix = cos_matrix - margin
-    neg_cos_matrix[neg_cos_matrix < 0] = 0
-    loss = (pos_cos_matrix * pos_label_matrix).sum() + (neg_cos_matrix * neg_label_matrix).sum()
-    loss /= (B * B)
-    return loss
-
 
 def con_loss(features, labels, margin=0.4):
     B, _ = features.shape

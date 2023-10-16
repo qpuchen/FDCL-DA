@@ -1,0 +1,12 @@
+pytorch==1.12.1
+tensorboard
+scipy
+ml_collections
+tqdm
+pandas
+matplotlib
+imageio
+timm
+yacs
+scikit-learn
+opencv-python
