@@ -26,18 +26,18 @@ Official PyTorch implementation of [FDCL-ST: foreground-background feature disti
 + opencv-python
 
 
-## Download the pre-trained Swin Transformer models
+## 2. Download the pre-trained Swin Transformer models
 
 ```
 wget https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22k.pth
 ```
-## Dataset
+## 3. Download Datasets
 You can download the datasets from the links below:
 
 + [Cotton80, SoyLocal, SoyGlobal, SoyGene, and SoyAgeing](https://maxwell.ict.griffith.edu.au/cvipl/UFG_dataset.html).
 
 
-## 1. Loading data
+## 4. Loading data
 If the result is the directory below, use **ImageDataset()** in `./data/build.py `to load the dataset
 
     ./datasets/soybean_gene/
@@ -58,14 +58,14 @@ If the result is the directory below, use **Cultivar()** in `./data/build.py` to
        ├── ...
        └── ImageN
 
-## 2. Training
+## 5. Training
 Using the scripts on scripts directory to train the model, e.g., train on SoybeanGene dataset.
 
 ```
 sh ./scripts/run_gene.sh
 ```
 
-## 3. Evaluation
+## 6. Evaluation
 Using the scripts on scripts directory to evaluate the model, e.g., evaluate on SoybeanGene dataset.
 
 ```
