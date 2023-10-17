@@ -40,7 +40,7 @@ You can download the datasets from the links below:
 ## 1. Loading data
 If the result is the directory below, use **ImageDataset()** in `./data/build.py `to load the dataset
 
-    nnUNet_raw_data_base/nnUNet_raw_data/Task01_Tooth/
+    ./datasets/soybean_gene/
     ├── classA
     ├── classA
     ├── ...
@@ -48,7 +48,7 @@ If the result is the directory below, use **ImageDataset()** in `./data/build.py
 
 If the result is the directory below, use **Cultivar()** in `./data/build.py` to load the dataset
 
-    nnUNet_raw_data_base/nnUNet_raw_data/Task01_Tooth/
+    ./datasets/soybean_gene/
     └── anno
        ├── train.txt
        └── test.txt
