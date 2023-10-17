@@ -59,8 +59,6 @@ def parse_option():
                         help="mask weight for loss")
     parser.add_argument('--con_w', type=float, default=0.5,
                         help="loss weight for con loss")
-    parser.add_argument('--suppr_w', type=float, default=0.5,
-                        help="loss weight for suppression loss")
     parser.add_argument('--fd_w', type=float, default=0.5,
                         help="loss weight for drop loss")
     parser.add_argument('--origin_w', type=float, default=1,
