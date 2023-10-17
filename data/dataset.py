@@ -27,14 +27,14 @@ class ImageDataset():
         self.mode = 'train' if is_train else 'test'
 
         self.data_infos = []
-        folders = os.listdir(root)
+        folders = os.listdir(os.path.join(root, self.mode))
         folders.sort()  # sort by alphabet
         self.labels = []
         self.imgs_name = []
 
         print("[dataset] class number:", len(folders))
         for class_id, folder in enumerate(folders):
-            files = os.path.join(root, self.mode, folder)
+            files = os.listdir(os.path.join(root, self.mode, folder))
             for file in files:
                 data_path = os.path.join(root, self.mode, folder, file)
                 self.data_infos.append({"path": data_path, "label": class_id})
@@ -53,7 +53,7 @@ class ImageDataset():
         return out, target
 
     def __len__(self):
-        return len(self.imgs_name)
+        return len(self.data_infos)
 
 
 class Cultivar():
