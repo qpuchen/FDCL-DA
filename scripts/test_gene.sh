@@ -19,6 +19,6 @@ CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node 1 --m
 --data-path ./datasets \
 --batch-size 12 \
 --eval-batch-size 12 \
---pretrained ./checkpoints/$tag/best.pth \
+--pretrained ./output/swin_base_patch4_window7_224/$tag/best.pth \
 >> logs/gene/$tag 2>&1 & \
 tail -fn 50 logs/gene/$tag
