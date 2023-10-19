@@ -1,5 +1,5 @@
 export tag='gene_sb7_fullb_np2_lr2e-3_mul5_bs12_448_ep200_linear_ee2'
-CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node 1 --master_port 12347  main.py \
+CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.launch --nproc_per_node 1 --master_port 12347  test.py \
 --dataset soybean_gene \
 --tag $tag \
 --lr 2e-3 \
