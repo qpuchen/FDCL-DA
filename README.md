@@ -1,3 +1,10 @@
+# Integrating foreground–background feature distillation and contrastive feature learning for ultra-fine-grained visual classification
+
+
+This repository is the official implementation of the paper
+[Integrating foreground–background feature distillation and contrastive feature learning for ultra-fine-grained visual classification](https://www.sciencedirect.com/science/article/abs/pii/S0031320324000906).
+
+
 ## Abstract
 <div style="text-align:justify">
 In pattern recognition, ultra-fine-grained visual classification (ultra-FGVC) has emerged as a paramount challenge, focusing on sub-category distinction within fine-grained objects. The near-indistinguishable similarities among such objects, combined with the dearth of sample data, intensify this challenge. In response, our FDCL-DA method is introduced, which integrates Foreground-background feature Distillation (FD) and Contrastive feature Learning (CL) with Dual Augmentation (DA). This method uses two different data augmentation techniques, standard and auxiliary augmentation, to enhance model performance and generalization ability. The FD module reduces superfluous features and augments the contrast between the principal entity and its backdrop, while the CL focuses on creating unique data imprints by reducing intra-class resemblances and enhancing inter-class disparities. Integrating this method with different architectures, such as ResNet-50, Vision Transformer, and Swin-Transformer (Swin-T), significantly improves these backbone networks, especially when used with Swin-T, leading to promising results on eight popular datasets for ultra-FGVC tasks.
